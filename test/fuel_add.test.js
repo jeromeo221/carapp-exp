@@ -12,6 +12,7 @@ describe('Adds fuel transactions', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -119,7 +120,7 @@ describe('Adds fuel transactions', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
 
@@ -128,6 +129,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -222,7 +224,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
 
@@ -231,6 +233,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -304,7 +307,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
 
@@ -313,6 +316,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -386,7 +390,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
 
@@ -395,6 +399,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -462,6 +467,6 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });

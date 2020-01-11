@@ -13,6 +13,7 @@ describe('Retrieve fuel details', async function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -52,6 +53,7 @@ describe('Retrieve fuel details', async function() {
     });
 
     it('Gets the fuel list', async function() {
+        this.skip();
         //Add a 2nd baseline fuel transaction
         fuel2 = new Fuel({
             vehicle: vehicle._id,
@@ -81,6 +83,6 @@ describe('Retrieve fuel details', async function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
  
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });

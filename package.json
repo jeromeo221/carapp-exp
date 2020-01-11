@@ -9,7 +9,7 @@
   "scripts": {
     "start": "serverless offline start --skipCacheInvalidation --port 3001",
     "test": "mocha --timeout 25000 --exit",
-    "deploy": "sls deploy -v --env test"
+    "deploy": "sls deploy -v --stage test --env test"
   },
   "keywords": [],
   "author": "",

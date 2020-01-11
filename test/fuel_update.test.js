@@ -12,6 +12,7 @@ describe('Updates fuel transactions', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -112,7 +113,7 @@ describe('Updates fuel transactions', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
 
@@ -123,6 +124,7 @@ describe('Updates fuel transaction missed fillup', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -272,6 +274,6 @@ describe('Updates fuel transaction missed fillup', function() {
            await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
