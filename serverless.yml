@@ -23,7 +23,7 @@ service: carapp-api
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: test
+  stage: ${env:STAGE, opt:stage}
   region: ap-southeast-2
 
 plugins:
