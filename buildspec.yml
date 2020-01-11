@@ -12,22 +12,21 @@ phases:
             - npm run test
             # - serverless deploy --stage test -v
             # create directory for deployment packages
-            # - mkdir artifacts
+            - mkdir artifacts
             # create staging deployment package
-            # - mkdir artifacts/stg
-            # - serverless package --package artifacts/stg --stage stg -v
+            - mkdir artifacts/stg
+            - serverless package --package artifacts/stg --stage stg -v
             # create prod deployment package
-            # - mkdir artifacts/prod
-            # - serverless package --package artifacts/prod --stage prod -v
-    #post_build:
-        #commands:
-            # - serverless remove --stage test -v
+            - mkdir artifacts/prod
+            - serverless package --package artifacts/prod --stage prod -v
+#    post_build:
+#        commands:
+#            - serverless remove --stage test -v
 
-#artifacts:
-#  files:
-#    - artifacts/**/*
+artifacts:
+  files:
+    - artifacts/**/*
     # This creates a Serverless service directory, thus allowing our deployment.
     # The serverless.yml will not be used for actual deployment.
-#    - serverless.yml
-#    - deploy.sh
-            
+    - serverless.yml
+    - deploy.sh
