@@ -13,6 +13,7 @@ describe('Odometer and Date validations', function() {
     let fuelList = [];
 
     before(async function() {
+        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -147,6 +148,6 @@ describe('Odometer and Date validations', function() {
             await Fuel.findByIdAndDelete(fuelId);
         }
 
-        await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
     });
 });
