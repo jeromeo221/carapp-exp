@@ -118,6 +118,8 @@ functions:
           path: /fuels/{id}
           method: delete
           cors: true
+    environment:
+      MONGODB_URL: ${env:MONGODB_URL}
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
