@@ -1,5 +1,4 @@
 const chai = require('chai');
-const mongoose = require('mongoose');
 const getFuel = require('../functions/getFuel');
 const listFuel = require('../functions/listFuels');
 const Fuel = require('../models/Fuel');
@@ -13,7 +12,6 @@ describe('Retrieve fuel details', async function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -53,7 +51,6 @@ describe('Retrieve fuel details', async function() {
     });
 
     it('Gets the fuel list', async function() {
-        this.skip();
         //Add a 2nd baseline fuel transaction
         fuel2 = new Fuel({
             vehicle: vehicle._id,

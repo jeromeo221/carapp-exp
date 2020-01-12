@@ -1,5 +1,4 @@
 const chai = require('chai');
-const mongoose = require('mongoose');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
 const addFuel = require('../functions/addFuel');
@@ -13,7 +12,6 @@ describe('Odometer and Date validations', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
