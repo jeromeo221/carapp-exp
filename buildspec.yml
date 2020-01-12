@@ -1,3 +1,4 @@
+#Only being used for AWS Code build. We are now using Seed CI/CD instead. Please ignore this file.
 version: 0.2
 
 phases: 

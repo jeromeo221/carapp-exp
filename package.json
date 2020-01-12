@@ -9,7 +9,7 @@
   "scripts": {
     "start": "serverless offline start --skipCacheInvalidation --port 3001",
     "test": "mocha --timeout 25000 --exit",
-    "deploy:test": "serverless deploy -v --stage test --env test",
+    "deploy:test": "serverless deploy -v --stage stg --env test",
     "remove:test": "serverless remove -v --stage test"
   },
   "keywords": [],
