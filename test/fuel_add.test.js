@@ -1,5 +1,4 @@
 const chai = require('chai');
-const mongoose = require('mongoose');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
 const addFuel = require('../functions/addFuel');
@@ -12,7 +11,6 @@ describe('Adds fuel transactions', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -129,7 +127,6 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -233,7 +230,6 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -316,7 +312,6 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
@@ -399,7 +394,6 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",

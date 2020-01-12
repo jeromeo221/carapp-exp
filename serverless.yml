@@ -23,15 +23,17 @@ service: carapp-exp
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${env:STAGE, opt:stage}
+  stage: ${opt:stage, 'test'}
   region: ap-southeast-2
+  stackTags:
+    Project: carapp
+  tags:
+    Project: carapp
+    Env: ${opt:stage, self:provider.stage}
 
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
-
-environment:
-  STAGE: ${opt:stage, self:provider.stage}
 
 custom:
   # Our stage is based on what is passed in when running serverless

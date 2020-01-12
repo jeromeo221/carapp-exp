@@ -1,5 +1,4 @@
 const chai = require('chai');
-const mongoose = require('mongoose');
 const fuelLib = require('../libs/fuel-lib');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
@@ -13,7 +12,6 @@ describe('Recalculation of fuel efficiency', function() {
     let fuelList = [];
 
     before(async function() {
-        this.skip();
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
