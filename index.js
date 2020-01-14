@@ -157,7 +157,12 @@ app.get('/fuels', async (req, res) => {
             error: 'Unable to connect to database'
         }
     }
-    result = await listFuel.handler({ vehicle: req.query.vehicleId }, {});
+    result = await listFuel.handler(
+        { 
+            vehicle: req.query.vehicleId, 
+            page: req.query.page,
+            limit: req.query.limit
+        }, {});
     res.json(result);
 });
 

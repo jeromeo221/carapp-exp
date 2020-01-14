@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const fuelSchema = new Schema({
@@ -41,5 +42,6 @@ const fuelSchema = new Schema({
         type: Number
     }
 });
+fuelSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Fuel', fuelSchema);
