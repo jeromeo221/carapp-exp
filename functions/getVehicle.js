@@ -1,14 +1,8 @@
-const Vehicle = require('../models/Vehicle');
+const vehicleLib = require('../libs/vehicle-lib');
 
 exports.handler = async (event, context) => {
     try {
-        let vehicle = await Vehicle.findById(event.id);
-        if(!vehicle){
-            return {
-                success: false,
-                error: 'Oops. Vehicle does not exist'
-            }
-        }
+        const vehicle = await vehicleLib.checkVehicleUser(event.id, event.userId);
         return {
             success: true,
             data: vehicle

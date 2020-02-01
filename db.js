@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const db = async () => {
+  try {
+    await connectToDatabase();
+  } catch(err){
+    return {
+      success: false,
+      error: 'Unable to connect to database'
+    }
+  }
+  return null;
+}
+
 const connectToDatabase = async () => {
   let isConnected = mongoose.connection.readyState;;
   if (isConnected) {
@@ -13,4 +25,4 @@ const connectToDatabase = async () => {
   await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 };
 
-module.exports = connectToDatabase;
+module.exports = db;

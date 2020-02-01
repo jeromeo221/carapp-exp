@@ -69,6 +69,10 @@ plugins:
 #    - exclude-me-dir/**
 
 functions:
+  authorize:
+    handler: functions/authorizer.handler
+    memorySize: 256
+    timeout: 2
   carapi:
     handler: index.handler
 #    The following are a few example events you can configure
@@ -78,45 +82,58 @@ functions:
     timeout: 4
     events:
       - http:
-          path: /vehicles
+          path: /signup
+          method: post
+          cors: true
+      - http:
+          path: /login
           method: post
           cors: true
       - http:
           path: /vehicles
+          method: post
+          cors: true
+          authorizer: authorize
+      - http:
+          path: /vehicles
           method: get
           cors: true
+          authorizer: authorize
       - http:
           path: /vehicles/{id}
           method: get
           cors: true
+          authorizer: authorize
       - http:
           path: /vehicles/{id}
           method: put
           cors: true
+          authorizer: authorize
       - http:
           path: /vehicles/{id}
           method: delete
           cors: true
+          authorizer: authorize
       - http:
           path: /fuels
           method: post
           cors: true
+          authorizer: authorize
       - http:
           path: /fuels
           method: get
           cors: true
-      - http:
-          path: /fuels/{id}
-          method: get
-          cors: true
+          authorizer: authorize
       - http:
           path: /fuels/{id}
           method: put
           cors: true
+          authorizer: authorize
       - http:
           path: /fuels/{id}
           method: delete
           cors: true
+          authorizer: authorize
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

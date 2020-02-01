@@ -1,13 +1,10 @@
 const Fuel = require('../models/Fuel');
+const vehicleLib = require('../libs/vehicle-lib');
 
 exports.handler = async (event, context) => {
     try {
-        if(!event.vehicle){
-            return {
-                success: false,
-                error: 'Vehicle is required'
-            }
-        }
+        if(!event.vehicle) throw new Error('Vehicle is required');
+        await vehicleLib.checkVehicleUser(event.vehicle, event.userId);
 
         //Soft pagination limits
         let page = 1;

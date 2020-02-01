@@ -3,20 +3,31 @@ const getFuel = require('../functions/getFuel');
 const listFuel = require('../functions/listFuels');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
+const User = require('../models/User');
 const {lastweek, lastmonth } = require('../libs/test-lib');
 
 let expect = chai.expect;
 
 describe('Retrieve fuel details', async function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+        
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -67,7 +78,10 @@ describe('Retrieve fuel details', async function() {
         await fuel2.save();
         fuelList.push(fuel2._id);
         
-        const result = await listFuel.handler({ vehicle: vehicle._id}, {});
+        const result = await listFuel.handler({ 
+            vehicle: vehicle._id,
+            userId: user._id
+        }, {});
         expect(result.success).to.be.equal(true);
         expect(result.data).to.have.length(2);
         expect(result.data[0].odometer).to.be.equal(10000);
@@ -81,5 +95,6 @@ describe('Retrieve fuel details', async function() {
         }
  
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
     });
 });

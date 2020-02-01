@@ -1,6 +1,7 @@
 const chai = require('chai');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
+const User = require('../models/User');
 const addFuel = require('../functions/addFuel');
 const updateFuel = require('../functions/updateFuel');
 const {today, yesterday, lastweek, lastmonth } = require('../libs/test-lib');
@@ -8,15 +9,25 @@ const {today, yesterday, lastweek, lastmonth } = require('../libs/test-lib');
 let expect = chai.expect;
 
 describe('Odometer and Date validations', function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -52,6 +63,7 @@ describe('Odometer and Date validations', function() {
 
     it('Adds a transaction where odometer is less than the previous one', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(today).toISOString(),
@@ -70,6 +82,7 @@ describe('Odometer and Date validations', function() {
 
     it('Adds a transaction where odometer is greater than the next one', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastmonth).toISOString(),
@@ -89,6 +102,7 @@ describe('Odometer and Date validations', function() {
     it('Updates a transaction where odometer is less than the previous one', async function() {
         const updateData = {
             id: fuelList[1],
+            userId: user._id,
             data: {
                 odometer: 9000
             }
@@ -101,6 +115,7 @@ describe('Odometer and Date validations', function() {
     it('Updates a transaction where odometer is greater than the next one', async function() {
         const updateData = {
             id: fuelList[0],
+            userId: user._id,
             data: {
                 odometer: 12000
             }
@@ -112,6 +127,7 @@ describe('Odometer and Date validations', function() {
 
     it('Add a fuel transaction with already an existing date', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastweek).toISOString(),
@@ -131,6 +147,7 @@ describe('Odometer and Date validations', function() {
     it('Updates the date of fuel transaction', async function() {
         const updateData = {
             id: fuelList[0],
+            userId: user._id,
             data: {
                 date: new Date(lastmonth).toISOString()
             }
@@ -147,5 +164,6 @@ describe('Odometer and Date validations', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
     });
 });
