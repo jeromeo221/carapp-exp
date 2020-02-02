@@ -8,10 +8,10 @@ exports.validate = (data) => {
 exports.checkVehicleUser = async (vehicleId, userId) => {
     if(!userId) throw new Error('User is required');
     if(!vehicleId) throw new Error('Vehicle is required');
-
     let vehicle = await Vehicle.findById(vehicleId);
+    if(!vehicle) throw new Error('Vehicle does not exist');
     if(!vehicle.user) throw new Error('Vehicle does not have a user');
-    if(!vehicle || userId.toString() !== vehicle.user.toString()){
+    if(userId.toString() !== vehicle.user.toString()){
         throw new Error('Oops. Vehicle does not exist');
     }
     return vehicle;

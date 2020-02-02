@@ -12,7 +12,6 @@ exports.handler = async (event, context) => {
             data: vehicle
         }
     } catch(err){
-        console.log(err.message);
         return {
             success: false,
             error: err.message

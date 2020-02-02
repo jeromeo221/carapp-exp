@@ -2,12 +2,15 @@ const chai = require('chai');
 const User = require('../models/User');
 const signup = require('../functions/signup');
 const login = require('../functions/login');
+const refresh = require('../functions/refresh');
+const authLib = require('../libs/auth-lib');
 
 let expect = chai.expect;
 
 describe('Authentication and Authorization', function() {
     let user = null;
     let newUser = null;
+    let rtoken = null;
     const email = "utf.test2@gmail.com";
 
     before(async function() {
@@ -70,7 +73,31 @@ describe('Authentication and Authorization', function() {
         }, {});
         expect(result.success).to.be.equal(true);
         expect(result.data.token).to.have.length.greaterThan(10);
-        token = result.data.token;
+    });
+
+    it('Refresh token', async function() {
+        //Create a refresh token first
+        rtoken = authLib.createRefreshToken(user._id, 1);
+        const result = await refresh.handler({caid: rtoken}, {});
+        expect(result.success).to.be.equal(true);
+        expect(result.data.token).to.have.length.greaterThan(10);
+
+        //This token should have a version of 2 to be used on the next test case
+        rtoken = result.data.rtoken;
+    });
+
+    it('Refresh token on the next version', async function() {
+        //The user and new token from prev test case should have both of version 2
+        const result = await refresh.handler({caid: rtoken}, {});
+        expect(result.success).to.be.equal(true);
+        expect(result.data.token).to.have.length.greaterThan(10);
+    });
+
+    it('Refresh token with the wrong version', async function() {
+        const wrongToken = authLib.createRefreshToken(user._id, 5);
+        const result = await refresh.handler({caid: wrongToken}, {});
+        expect(result.success).to.be.equal(false);
+        expect(result.error).to.be.equal('Token is expired');
     });
 
     after(async function() {

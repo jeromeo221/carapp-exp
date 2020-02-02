@@ -79,7 +79,7 @@ functions:
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
     memorySize: 256
-    timeout: 4
+    timeout: 10
     events:
       - http:
           path: /signup
@@ -89,6 +89,11 @@ functions:
           path: /login
           method: post
           cors: true
+      - http:
+          path: /refresh
+          method: post
+          cors: true
+          authorizer: authorize
       - http:
           path: /vehicles
           method: post

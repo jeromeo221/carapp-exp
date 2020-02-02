@@ -11,13 +11,19 @@ const listFuel = require('./functions/listFuels');
 const deleteFuel = require('./functions/deleteFuel');
 const login = require('./functions/login');
 const signup = require('./functions/signup');
+const refresh = require('./functions/refresh');
 const cors = require('cors');
 const connectDb = require('./db');
+const cookieParser = require('cookie-parser');
+const authLib = require('./libs/auth-lib');
 
 const app = express();
 
 //Body parser middleware
-app.use(cors());
+app.use(cors({
+    credentials: true
+}));
+app.use(cookieParser());
 app.use(express.json());
 
 //Signup
@@ -34,6 +40,35 @@ app.post('/login', async (req, res) => {
     let result = await connectDb();
     if(!result){
         result = await login.handler(req.body, {});
+        if(result.success){
+            authLib.sendRefreshToken(res, result.data.rtoken);
+            res.json({
+                success: result.success,
+                data: {
+                    token: result.data.token
+                }
+            });
+            return;
+        }
+    }
+    res.json(result);
+});
+
+//Refresh
+app.post('/refresh', async (req, res) => {
+    let result = await connectDb();
+    if(!result){
+        result = await refresh.handler(req.cookies, {});
+        if(result.success){
+            authLib.sendRefreshToken(res, result.data.rtoken);
+            res.json({
+                success: result.success,
+                data: {
+                    token: result.data.token
+                }
+            });
+            return;
+        }
     }
     res.json(result);
 });

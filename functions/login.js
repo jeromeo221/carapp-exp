@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcyrpt = require('bcryptjs');
 const User = require('../models/User');
+const authLib = require('../libs/auth-lib');
 
 exports.handler = async (event, context) => {
     const email = event.email;
@@ -18,18 +19,13 @@ exports.handler = async (event, context) => {
         const success = await bcyrpt.compare(password, user.password);
         if(!success) throw new Error('Incorrect username or password');
 
-        const secret = process.env.AUTHORIZER_PHRASE;
-        if(!secret) throw new Error('No authorizer phrase');
-
-        const payload = {
-            userId: user.id,
-            email
-        }
-        const token = jwt.sign({payload}, secret, {expiresIn: '1h'});
+        const token = authLib.createAuthorizerToken(user.id, email);
+        const rtoken = authLib.createRefreshToken(user.id, user.version);
         return {
             success: true,
             data: {
-                token: token
+                token,
+                rtoken
             }
         }
     } catch(err){

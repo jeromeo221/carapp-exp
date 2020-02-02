@@ -10,14 +10,17 @@ exports.handler = async (event, context) => {
     inputData.pricekm = null;
     
     try {
-        //Do not allow to update date and vehicle as this will complicate fuel efficiency computation
+        //Do not allow to update date as this will complicate fuel efficiency computation
         if(inputData.date) throw new Error('Date of fuel transaction cannot be updated');
-        if(inputData.vehicle) throw new Error('Vehicle cannot be updated'); 
-
         const fuel = await Fuel.findById(event.id);
         const toUpdateFuel = {
             ...fuel._doc,
             ...inputData
+        }
+
+        //Do not allow to update vehicle
+        if(inputData.vehicle && inputData.vehicle.toString() !== fuel.vehicle.toString()){
+            throw new Error('Vehicle cannot be updated'); 
         }
 
         await vehicleLib.checkVehicleUser(fuel.vehicle, event.userId);        

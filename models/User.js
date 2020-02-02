@@ -13,6 +13,11 @@ const userSchema = new Schema({
     name: {
         type: String,
         required: false
+    },
+    tokenVersion: {
+        type: Number,
+        required: false,
+        default: 1
     }
 });
 

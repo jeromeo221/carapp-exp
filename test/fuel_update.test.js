@@ -11,6 +11,7 @@ describe('Updates fuel transactions', function() {
     let user = null;
     let user2 = null;
     let vehicle = null;
+    let vehicle2 = null;
     let fuelList = [];
 
     before(async function() {
@@ -39,6 +40,16 @@ describe('Updates fuel transactions', function() {
             name: "NameTest"
         });
         await vehicle.save();
+
+        //Create another vehicle
+        vehicle2 = new Vehicle({
+            make: "MakeTest2",
+            model: "MakeModel2",
+            year: 1901,
+            user: user._id,
+            name: "NameTest2"
+        });
+        await vehicle2.save();
 
         //Add a baseline fuel transaction
         const fuel = new Fuel({
@@ -115,7 +126,7 @@ describe('Updates fuel transactions', function() {
         expect(findfuel.pricekm).to.be.closeTo(9.8039, 0.0001);
     });
 
-    it('Updates updates the date of fuel transaction', async function() {
+    it('Updates the date of fuel transaction', async function() {
         const updFuel = await updateFuel.handler({
             id: fuelList[0],
             userId: user._id,
@@ -128,7 +139,7 @@ describe('Updates fuel transactions', function() {
         expect(updFuel.error).to.be.equal('Date of fuel transaction cannot be updated');
     });
 
-    it('Updates updates fuel transaction with different user', async function() {
+    it('Updates fuel transaction with different user', async function() {
         const updFuel = await updateFuel.handler({
             id: fuelList[0],
             userId: user2._id,
@@ -144,6 +155,23 @@ describe('Updates fuel transactions', function() {
         expect(updFuel.error).to.be.equal('Oops. Vehicle does not exist');
     });
 
+    it('Updates the vehicle of fuel transaction', async function() {
+        const updFuel = await updateFuel.handler({
+            id: fuelList[0],
+            userId: user2._id,
+            data: {
+                vehicle: vehicle2._id,
+                odometer: 11100,
+                volume: 51,
+                price: 1.2,
+                cost: 61.2
+            }
+        });
+
+        expect(updFuel.success).to.be.equal(false);
+        expect(updFuel.error).to.be.equal('Vehicle cannot be updated');
+    });
+
     after(async function() {
         //Cleanup fuel transactions
         for(const fuelId of fuelList){
@@ -151,6 +179,7 @@ describe('Updates fuel transactions', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(vehicle2) await Vehicle.findByIdAndDelete(vehicle2._id);
         if(user) await User.findByIdAndDelete(user._id);
         if(user2) await User.findByIdAndDelete(user2._id);
     });
