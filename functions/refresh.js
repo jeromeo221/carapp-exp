@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const authLib = require('../libs/auth-lib');
+const connectDb = require('../db');
 
 exports.handler = async (event, context) => {
     try {
@@ -21,6 +22,10 @@ exports.handler = async (event, context) => {
         const newRefreshToken = authLib.createRefreshToken(user.id, newTokenVersion);
         const token = authLib.createAuthorizerToken(user.id, user.email);
         
+        //Connect to database only at this point
+        let dbResult = await connectDb();
+        if(dbResult) throw new Error(dbResult.error);
+
         //Update User
         const newData = {
             tokenVersion: newTokenVersion

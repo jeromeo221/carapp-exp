@@ -93,7 +93,6 @@ functions:
           path: /refresh
           method: post
           cors: true
-          authorizer: authorize
       - http:
           path: /vehicles
           method: post

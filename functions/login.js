@@ -19,8 +19,9 @@ exports.handler = async (event, context) => {
         const success = await bcyrpt.compare(password, user.password);
         if(!success) throw new Error('Incorrect username or password');
 
+        const userVersion = user.version || '1';
         const token = authLib.createAuthorizerToken(user.id, email);
-        const rtoken = authLib.createRefreshToken(user.id, user.version);
+        const rtoken = authLib.createRefreshToken(user.id, userVersion);
         return {
             success: true,
             data: {

@@ -21,6 +21,7 @@ const app = express();
 
 //Body parser middleware
 app.use(cors({
+    origin: "http://localhost:3000",
     credentials: true
 }));
 app.use(cookieParser());
@@ -56,20 +57,20 @@ app.post('/login', async (req, res) => {
 
 //Refresh
 app.post('/refresh', async (req, res) => {
-    let result = await connectDb();
-    if(!result){
-        result = await refresh.handler(req.cookies, {});
-        if(result.success){
-            authLib.sendRefreshToken(res, result.data.rtoken);
-            res.json({
-                success: result.success,
-                data: {
-                    token: result.data.token
-                }
-            });
-            return;
-        }
+    //let result = await connectDb();
+    //if(!result){
+    result = await refresh.handler(req.cookies, {});
+    if(result.success){
+        authLib.sendRefreshToken(res, result.data.rtoken);
+        res.json({
+            success: result.success,
+            data: {
+                token: result.data.token
+            }
+        });
+        return;
     }
+    //}
     res.json(result);
 });
 
