@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 before(async function() {
     let mongoUrl = process.env.MONGODB_URL_UTF || process.env.MONGODB_URL;

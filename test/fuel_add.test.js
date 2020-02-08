@@ -1,21 +1,41 @@
 const chai = require('chai');
 const Fuel = require('../models/Fuel');
 const Vehicle = require('../models/Vehicle');
+const User = require('../models/User');
 const addFuel = require('../functions/addFuel');
 const {today, yesterday, lastweek, lastmonth } = require('../libs/test-lib');
 
 let expect = chai.expect;
 
 describe('Adds fuel transactions', function() {
+    let user = null;
+    let user2 = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+
+        //Create another user
+        user2 = new User({
+            email: "utf.test2@gmail.com",
+            password: "p123456",
+            name: "Utf Test2"
+        });
+        await user2.save();
+
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -23,6 +43,7 @@ describe('Adds fuel transactions', function() {
 
     it('Add first fuel resulting to no efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastmonth).toISOString(),
@@ -52,6 +73,7 @@ describe('Adds fuel transactions', function() {
 
     it('Adds second fuel transaction resulting to efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastweek).toISOString(),
@@ -73,6 +95,7 @@ describe('Adds fuel transactions', function() {
 
     it('Adds third fuel transaction with not full tank resulting to no efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(yesterday).toISOString(),
@@ -93,6 +116,7 @@ describe('Adds fuel transactions', function() {
 
     it('Adds fourth fuel transaction with full tank resulting to efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(today).toISOString(),
@@ -112,6 +136,24 @@ describe('Adds fuel transactions', function() {
         expect(fuel.pricekm).to.be.closeTo(7.8212, 0.0001);
     });
 
+    it('Adds a fuel with a different user', async function() {
+        const newFuel = await addFuel.handler({
+            userId: user2._id,
+            data: {
+                vehicle: vehicle._id,
+                date: new Date(today).toISOString(),
+                odometer: 11200,
+                volume: 25,
+                price: 1.2,
+                cost: 30,
+                isFull: true
+            }
+        }, {});
+
+        expect(newFuel.success).to.be.equal(false);
+        expect(newFuel.error).to.be.equal('Oops. Vehicle does not exist');
+    });
+
     after(async function() {
         //Cleanup fuel transactions
         for(const fuelId of fuelList){
@@ -119,19 +161,31 @@ describe('Adds fuel transactions', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
+        if(user2) await User.findByIdAndDelete(user2._id);
     });
 });
 
 describe('Adds fuel transactions with missed fillup and not full tank', function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -153,6 +207,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
 
     it('Adds fuel transaction with missed fillup and not full resulting to no efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastweek).toISOString(),
@@ -175,6 +230,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
 
     it('Adds another fuel transaction with full tank resulting to no efficiency calcuations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(yesterday).toISOString(),
@@ -196,6 +252,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
 
     it('Adds another fuel transaction with full tank resulting to efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(today).toISOString(),
@@ -222,19 +279,30 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
     });
 });
 
 describe('Adds fuel transactions with missed fillup and full tank', function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -256,6 +324,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
     it('Adds fuel transaction with missed fillup and full tank resulting to no efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastweek).toISOString(),
@@ -278,6 +347,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
     it('Adds another fuel transaction with full tank resulting to efficiency calcuations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(yesterday).toISOString(),
@@ -304,19 +374,30 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
     });
 });
 
 describe('Adds fuel transactions with missed fillup and full tank', function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -338,6 +419,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
     it('Adds fuel transaction with missed fillup and full tank resulting to no efficiency calculations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(lastweek).toISOString(),
@@ -360,6 +442,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
     it('Adds another fuel transaction with full tank resulting to efficiency calcuations', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: new Date(yesterday).toISOString(),
@@ -386,19 +469,30 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id);
     });
 });
 
 describe('Adds fuel transactions with missed fillup and full tank', function() {
+    let user = null;
     let vehicle = null;
     let fuelList = [];
 
     before(async function() {
+        //Create a user
+        user = new User({
+            email: "utf.test1@gmail.com",
+            password: "p123456",
+            name: "Utf Test1"
+        });
+        await user.save();
+        
         //Create a vehicle
         vehicle = new Vehicle({
             make: "MakeTest",
             model: "MakeModel",
             year: 1900,
+            user: user._id,
             name: "NameTest"
         });
         await vehicle.save();
@@ -435,6 +529,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
     it('Adds fuel transaction in the middle', async function() {
         const newFuel = await addFuel.handler({
+            userId: user._id,
             data: {
                 vehicle: vehicle._id,
                 date: yesterday,
@@ -462,5 +557,6 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
         }
 
         if(vehicle) await Vehicle.findByIdAndDelete(vehicle._id);
+        if(user) await User.findByIdAndDelete(user._id); 
     });
 });
