@@ -9,6 +9,9 @@ const addFuel = require('./functions/addFuel');
 const updateFuel = require('./functions/updateFuel');
 const listFuel = require('./functions/listFuels');
 const deleteFuel = require('./functions/deleteFuel');
+const getUser = require('./functions/getUser');
+const updateUser = require('./functions/updateUser.js');
+const updateUserPwd = require('./functions/updateUserPwd');
 const login = require('./functions/login');
 const signup = require('./functions/signup');
 const refresh = require('./functions/refresh');
@@ -21,7 +24,7 @@ const app = express();
 
 //Body parser middleware
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_ENDPOINT,
     credentials: true
 }));
 app.use(cookieParser());
@@ -33,6 +36,47 @@ app.post('/signup', async (req, res) => {
     if(!result){
         result = await signup.handler(req.body, {});
     }
+    res.json(result);
+});
+
+//Get User
+app.get('/user/:id', async (req, res) => {
+    let result = await connectDb();
+    if(!result){
+        const payload = {
+            userId: req.requestContext.authorizer.userId,
+            ...req.params
+        }
+        result = await getUser.handler(payload, {});
+    }
+    res.json(result);
+});
+
+//Update User
+app.put('/user/:id', async (req, res) => {
+    let result = await connectDb();
+    if(!result){
+        const newRequest = {
+            id: req.params.id,
+            userId: req.requestContext.authorizer.userId,
+            data: req.body.data
+        }
+        result = await updateUser.handler(newRequest, {});
+    }    
+    res.json(result);
+});
+
+//Change password
+app.put('/user/:id/changepwd', async (req, res) => {
+    let result = await connectDb();
+    if(!result){
+        const newRequest = {
+            id: req.params.id,
+            userId: req.requestContext.authorizer.userId,
+            data: req.body.data
+        }
+        result = await updateUserPwd.handler(newRequest, {});
+    }    
     res.json(result);
 });
 
@@ -55,10 +99,21 @@ app.post('/login', async (req, res) => {
     res.json(result);
 });
 
+//Logout
+app.post('/logout', (req, res) => {
+    try {
+        authLib.sendRefreshToken(res, '');
+        res.json({ success: true })
+    } catch(err){
+        res.json({
+            success: false,
+            error: err.message
+        })
+    }
+});
+
 //Refresh
 app.post('/refresh', async (req, res) => {
-    //let result = await connectDb();
-    //if(!result){
     result = await refresh.handler(req.cookies, {});
     if(result.success){
         authLib.sendRefreshToken(res, result.data.rtoken);
@@ -68,10 +123,9 @@ app.post('/refresh', async (req, res) => {
                 token: result.data.token
             }
         });
-        return;
+    } else {
+        res.json(result);
     }
-    //}
-    res.json(result);
 });
 
 //Create a vehicle

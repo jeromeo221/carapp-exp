@@ -84,60 +84,223 @@ functions:
       - http:
           path: /signup
           method: post
-          cors: true
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /login
           method: post
-          cors: true
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /logout
+          method: post
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /refresh
           method: post
-          cors: true
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /user/{id}
+          method: get
+          authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /user/{id}
+          method: put
+          authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /user/{id}/changepwd
+          method: put
+          authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /vehicles
           method: post
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /vehicles
           method: get
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /vehicles/{id}
           method: get
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /vehicles/{id}
           method: put
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /vehicles/{id}
           method: delete
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /fuels
           method: post
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /fuels
           method: get
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /fuels/{id}
           method: put
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
       - http:
           path: /fuels/{id}
           method: delete
-          cors: true
           authorizer: authorize
+          cors:
+            origin: ${env:FRONTEND_ENDPOINT}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
