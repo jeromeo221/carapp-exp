@@ -67,7 +67,7 @@ describe('Recalculation of fuel efficiency', function() {
         await fuelLib.recalculateEfficiency(addFuel);
         const recalcFuel = await Fuel.findById(fuel2._id);
         expect(recalcFuel.mileage).to.be.equal(16);
-        expect(recalcFuel.pricekm).to.be.equal(6.4);
+        expect(recalcFuel.pricekm).to.be.closeTo(0.1563, 0.0001);
     });
 
     it('Add another middle transaction with missed and not full', async function() {

@@ -18,7 +18,8 @@ exports.handler = async (event, context) => {
             price: inputData.price,
             cost: inputData.cost,
             isFull: inputData.isFull,
-            isMissed: inputData.isMissed
+            isMissed: inputData.isMissed,
+            isEstOdo: inputData.isEstOdo
         });
 
         await fuelLib.validate(fuel);
