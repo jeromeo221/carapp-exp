@@ -90,7 +90,7 @@ describe('Adds fuel transactions', function() {
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.equals(12.5);
-        expect(fuel.pricekm).to.be.equals(5)
+        expect(fuel.pricekm).to.be.equals(0.2)
     });
 
     it('Adds third fuel transaction with not full tank resulting to no efficiency calculations', async function() {
@@ -133,7 +133,7 @@ describe('Adds fuel transactions', function() {
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.closeTo(11.6667, 0.0001);
-        expect(fuel.pricekm).to.be.closeTo(7.8212, 0.0001);
+        expect(fuel.pricekm).to.be.closeTo(0.1279, 0.0001);
     });
 
     it('Adds a fuel with a different user', async function() {
@@ -269,7 +269,7 @@ describe('Adds fuel transactions with missed fillup and not full tank', function
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.closeTo(8.5714, 0.0001);
-        expect(fuel.pricekm).to.be.closeTo(3.2967, 0.0001);
+        expect(fuel.pricekm).to.be.closeTo(0.3033, 0.0001);
     });
 
     after(async function() {
@@ -364,7 +364,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.equal(14);
-        expect(fuel.pricekm).to.be.closeTo(9.3333, 0.0001);
+        expect(fuel.pricekm).to.be.closeTo(0.1071, 0.0001);
     });
 
     after(async function() {
@@ -459,7 +459,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.equal(14);
-        expect(fuel.pricekm).to.be.closeTo(9.3333, 0.0001);
+        expect(fuel.pricekm).to.be.closeTo(0.1071, 0.0001);
     });
 
     after(async function() {
@@ -547,7 +547,7 @@ describe('Adds fuel transactions with missed fillup and full tank', function() {
 
         const fuel = await Fuel.findById(newFuel.data._id);
         expect(fuel.mileage).to.be.equal(12.5);
-        expect(fuel.pricekm).to.be.closeTo(8.3333, 0.0001);
+        expect(fuel.pricekm).to.be.closeTo(0.1200, 0.0001);
     });
 
     after(async function() {

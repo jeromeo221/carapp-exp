@@ -123,7 +123,7 @@ describe('Updates fuel transactions', function() {
         const findfuel = await Fuel.findById(fuel._id);
         expect(findfuel.odometer).to.be.equal(10600);
         expect(findfuel.mileage).to.be.closeTo(11.7647, 0.0001);
-        expect(findfuel.pricekm).to.be.closeTo(9.8039, 0.0001);
+        expect(findfuel.pricekm).to.be.closeTo(0.1020, 0.0001);
     });
 
     it('Updates the date of fuel transaction', async function() {
@@ -270,7 +270,7 @@ describe('Updates fuel transaction missed fillup', function() {
         expect(updFuel.success).to.be.equal(true);
         const findFuel = await Fuel.findById(fuel2._id);
         expect(findFuel.mileage).to.be.equal(12);
-        expect(findFuel.pricekm).to.be.equal(6);
+        expect(findFuel.pricekm).to.be.closeTo(0.1667, 0.0001);
     });
 
     it('Updates the middle fuel transaction for all parameters', async function() {
@@ -288,7 +288,7 @@ describe('Updates fuel transaction missed fillup', function() {
         expect(updFuel.success).to.be.equal(true);
         const findFuel = await Fuel.findById(fuel2);
         expect(findFuel.mileage).to.be.closeTo(13.4615, 0.0001);
-        expect(findFuel.pricekm).to.be.closeTo(6.1188, 0.0001);
+        expect(findFuel.pricekm).to.be.closeTo(0.1634, 0.0001);
     });
 
     it('Updates middle fuel transaction to missed fillup', async function() {
@@ -318,7 +318,7 @@ describe('Updates fuel transaction missed fillup', function() {
         expect(updFuel.success).to.be.equal(true);
         const findFuel = await Fuel.findById(fuel2);
         expect(findFuel.mileage).to.be.closeTo(13.4615, 0.0001);
-        expect(findFuel.pricekm).to.be.closeTo(6.1188, 0.0001);
+        expect(findFuel.pricekm).to.be.closeTo(0.1634, 0.0001);
     });
 
     it('Updates middle fuel transaction from full tank', async function() {
@@ -348,7 +348,7 @@ describe('Updates fuel transaction missed fillup', function() {
         expect(updFuel.success).to.be.equal(true);
         const findFuel = await Fuel.findById(fuel2);
         expect(findFuel.mileage).to.be.closeTo(13.4615, 0.0001);
-        expect(findFuel.pricekm).to.be.closeTo(6.1188, 0.0001);
+        expect(findFuel.pricekm).to.be.closeTo(0.1634, 0.0001);
     });
 
     after(async function() {

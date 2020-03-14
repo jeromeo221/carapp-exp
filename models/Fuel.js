@@ -29,11 +29,17 @@ const fuelSchema = new Schema({
     },
     isFull: {
         type: Boolean,
-        required: true
+        required: true,
     },
     isMissed: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
+    },
+    isEstOdo: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     mileage: {
         type: Number

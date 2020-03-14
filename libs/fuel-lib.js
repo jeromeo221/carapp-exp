@@ -1,5 +1,23 @@
 const Fuel = require('../models/Fuel');
 
+// exports.estimateOdometer = async (currentFuel) => {
+//     if(currentFuel.odometer) return currentFuel.odometer;
+
+//     //Find the previous fuel records
+//     const fuels = await Fuel.find(
+//         { 
+//             date: {$lt: currentFuel.date},
+//             vehicle: {$eq: currentFuel.vehicle}
+//         }, null).sort({date: -1, odometer: -1});
+
+//     for (const fuel of fuels){
+//         if(!fuel.mileage || !fuel.volume) throw new Error('Cannot estimate odometer');
+//         odometer = Math.round(fuel.mileage * fuel.volume)
+//         break;
+//     }
+//     return odometer;
+// }
+
 exports.validate = async (currentFuel) => {
     try{
         //Validate if there is a an existing date and odometer
@@ -28,7 +46,7 @@ exports.validate = async (currentFuel) => {
             break;
         }
 
-        //Validate to make sure odometer of fuel record is less than the next fuel record
+        //Validate to make sure odometer of fuel record is less than the next fuel record        
         const nextFuels = await Fuel.find(
             { 
                 date: {$gt: currentFuel.date},
@@ -74,7 +92,7 @@ exports.computeEfficiency = async (currentFuel) => {
                 //If full, then use this to compute the efficiency, if not, get the next record
                 if(fuel.isFull){
                     mileage = (currentFuel.odometer - fuel.odometer)/volume
-                    pricekm = (currentFuel.odometer - fuel.odometer)/cost
+                    pricekm = cost/(currentFuel.odometer - fuel.odometer)
                     break;
                 } else {
                     //Add the volume if this is not full

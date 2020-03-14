@@ -19,8 +19,6 @@ exports.handler = async (event, context) => {
 
         let userTokenVersion = parseInt(user.tokenVersion) || 1;
         let payloadTokenVersion = parseInt(payload.version) || 1;
-        console.log('userTokenVersion', userTokenVersion);
-        console.log('payloadTokenVersion', payloadTokenVersion);
         
         if(userTokenVersion !== payloadTokenVersion){
             throw new Error('Token is expired');
