@@ -86,13 +86,23 @@ app.post('/login', async (req, res) => {
     if(!result){
         result = await login.handler(req.body, {});
         if(result.success){
-            authLib.sendRefreshToken(res, result.data.rtoken);
-            res.json({
-                success: result.success,
-                data: {
-                    token: result.data.token
-                }
-            });
+            if(req.body.isMobile){
+                res.json({
+                    success: result.success,
+                    data: {
+                        token: result.data.token,
+                        mtoken: result.data.mtoken
+                    }
+                });
+            } else {
+                authLib.sendRefreshToken(res, result.data.rtoken);
+                res.json({
+                    success: result.success,
+                    data: {
+                        token: result.data.token
+                    }
+                });
+            }            
             return;
         }
     }

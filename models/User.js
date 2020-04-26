@@ -18,6 +18,10 @@ const userSchema = new Schema({
         type: Number,
         required: false,
         default: 1
+    },
+    mtoken: {
+        type: String,
+        required: false
     }
 });
 
