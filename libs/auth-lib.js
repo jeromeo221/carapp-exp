@@ -24,6 +24,18 @@ exports.createRefreshToken = (id, version) => {
   return token;
 }
 
+exports.createMobileToken = (id, email) => {
+  const secret = process.env.AUTHORIZER_PHRASE;
+  if(!secret) throw new Error('No authorizer phrase');
+  
+  const payload = {
+    userId: id,
+    email
+  }
+  const token = jwt.sign({payload}, secret);
+  return token;
+}
+
 exports.sendRefreshToken = (res, token) => {
   res.cookie('caid', token, {
     httpOnly: true,

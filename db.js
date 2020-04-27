@@ -23,6 +23,7 @@ const connectToDatabase = async () => {
   console.log('using new database connection');
   const uri = process.env.MONGODB_URL || `mongodb://localhost:27017/carapp`
   await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+  console.log('DB connected');
 };
 
 module.exports = db;

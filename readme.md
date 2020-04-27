@@ -4,6 +4,12 @@ Backend component of the application to maintain fuel transactions of a certain 
 To install, run:
 `npm install`
 
+Configure .env and .env.test after cloning with the following properties:
+* `FRONTEND_ENDPOINT` - Base URL of the front end that will be calling this service
+* `AUTHORIZER_PHRASE` - Secret text used to sign the JWT token for user authentication 
+* `REFRESHER_PHRASE` - Secret text used to refresh the Authorization token. Must be different than `AUTHORIZER_PHRASE`
+* `MONGODB_URL` - Base URL of the MongoDB database
+
 ### API Calls
 
 Authorization API:
@@ -12,7 +18,7 @@ Authorization API:
 * Refresh - When the page is refreshed in the browser, this will be invoked to re-initialize the authorization token.
 * Logout
 
-#### The API calls below requires an authorizatio token.
+#### The API calls below requires an authorization token.
 
 Vehicle API:
 * Add Vehicle
