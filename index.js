@@ -259,4 +259,10 @@ app.get('/fuels', async (req, res) => {
     res.json(result);
 });
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+}
+
 module.exports.handler = serverless(app);
