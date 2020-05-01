@@ -25,7 +25,8 @@ exports.handler = async (event, context) => {
                 //Check if mobile token matches
                 if(mtoken !== user.mtoken) throw new Error('Unable to login');
 
-                //Generate an authorizer token
+                //Verify and Generate an authorizer token
+                authLib.verifyAuthorizerToken('Bearer ' + mtoken)
                 const token = authLib.createAuthorizerToken(user.id, email);
 
                 return {
