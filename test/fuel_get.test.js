@@ -84,8 +84,8 @@ describe('Retrieve fuel details', async function() {
         }, {});
         expect(result.success).to.be.equal(true);
         expect(result.data).to.have.length(2);
-        expect(result.data[0].odometer).to.be.equal(10000);
-        expect(result.data[1].odometer).to.be.equal(10500);
+        expect(result.data[0].odometer).to.be.equal(10500);
+        expect(result.data[1].odometer).to.be.equal(10000);
     });
 
     after(async function() {
