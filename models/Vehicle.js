@@ -18,6 +18,9 @@ const vehicleSchema = new Schema({
     },
     name: {
         type: String
+    },
+    unit: {
+        type: String
     }
 });
 

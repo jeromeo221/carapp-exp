@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "serverless offline start --skipCacheInvalidation --port 3001",
+    "start": "serverless offline start --noPrependStageInUrl --httpPort 3001",
     "test": "mocha --timeout 25000 --exit",
     "deploy:test": "serverless deploy -v --stage test --env test",
     "remove:test": "serverless remove -v --stage test"
@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.5",
+    "mongoose": "^5.12.12",
     "mongoose-paginate": "^5.0.3",
     "serverless-http": "^2.3.0"
   },
@@ -30,6 +30,6 @@
     "dotenv": "^8.2.0",
     "mocha": "^7.0.0",
     "serverless-dotenv-plugin": "^2.1.1",
-    "serverless-offline": "^5.12.1"
+    "serverless-offline": "^7.0.0"
   }
 }

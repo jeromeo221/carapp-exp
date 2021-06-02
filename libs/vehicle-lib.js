@@ -3,6 +3,12 @@ const Vehicle = require('../models/Vehicle');
 exports.validate = (data) => {
     if(!data.make) throw new Error('Make is required');
     if(!data.model) throw new Error('Model is required');
+    if(data.unit) {
+        if(data.unit === 'metric' || data.unit === 'imperial') {
+        } else {
+            throw new Error('Unit can only be either metric or imperial');
+        }
+    }
 }
 
 exports.checkVehicleUser = async (vehicleId, userId) => {
